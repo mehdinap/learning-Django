@@ -10,6 +10,10 @@ ul{
     flex-direction: column;
     flex-wrap: wrap;
     height: 15rem;
+    background-color: white;
+}
+body{
+    background-color: rgb(24, 24, 24);
 }
 
 /* arrange in center  */
@@ -30,4 +34,10 @@ li:nth-last-of-type(4){
 li a{
     text-decoration: none;
     color: #383838;
+}
+
+/* change color when mouse come on it */
+li a:hover,
+li a:active {
+    color: rgba(179, 30, 30, 0.26);
 }
