@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import Http404, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
-# from django.template.loader import render_to_string
+from django.template.loader import render_to_string
 
 
 mothlly_challenges = {
@@ -10,6 +10,7 @@ mothlly_challenges = {
     "murch": "This is murch!",
     "april": "This is april!",
     "may": "This is may!",
+    "december": None
 }
 
 
@@ -17,13 +18,9 @@ def index(request):
     list_item = ""
     months = list(mothlly_challenges.keys())
 
-    for month in months:
-        capitalized_month = month.capitalize()
-        month_path = reverse("month_challenge", args=[month])
-        list_item += f'<li><a href="{month_path}">{capitalized_month}</a></li>'
-
-    response_data = f"<ul>{list_item}</ul>"
-    return HttpResponse(response_data)
+    return render(request,"challenges/index.html",{
+        "months":months
+    })
 
 
 def monthly_challenges_by_numbers(request, month):
@@ -47,9 +44,10 @@ def monthly_challenges(request, month):
     try:
         challeng_data = mothlly_challenges[month]
         return render( request,"challenges/challenges.html",{
-            "text":challeng_data
+            "text":challeng_data,
+            "month_name" : month
         })
         # response_data = render_to_string("challenges/challenges.html")
         # return HttpResponse(response_data)
     except:
-        return HttpResponseNotFound("<h1>This is not supported!</h1>")
+        raise Http404()
